@@ -2,12 +2,15 @@ version: v1.0.0
 steps:
 # Build target image
 - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f Dockerfile .
-# Run image 
+- cmd: echo "Build successful, starting test container"
+# Run image
 - cmd: -t {{.Run.Registry}}/hello-world:{{.Run.ID}}
   id: test
   detach: true
   ports: ["8080:80"]
+- cmd: echo "Test container started"
 - cmd: docker stop test
+- cmd: echo "Test container stopped, pushing"
 # Push image
 - push:
   - {{.Run.Registry}}/hello-world:{{.Run.ID}}
